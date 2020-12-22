@@ -11,10 +11,12 @@ schema {
   type Author {
     name: String!
     photo: Image!
+    books: [Book]
   }
   type Book {
     title: String!
     cover: Image!
+    author: Author
   }
   type User {
     name: String!
