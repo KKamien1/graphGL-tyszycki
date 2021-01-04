@@ -1,26 +1,30 @@
-const db = require("./db");
-
 const resolvers = {
-  Book: {
-    author: parent => db.getAuthorById(parent.authorId),
-    cover: parent => ({
-      path: parent.coverPath
-    })
-  },
-  Author: {
-    books: parent => parent.bookIds.map(db.getBookById),
-    photo: parent => ({
-      path: parent.photoPath
-    })
-  },
-  Avatar: {
-    image: parent => ({
-      path: parent.imagePath
-    })
-  },
-  Image: {
-    url: (parent, args, context) => context.baseAssetsUrl + parent.path
-  }
-};
-
-module.exports = resolvers;
+    Query: {
+      books: (rootValue, args, { db }) => db.getAllBooks(),
+      authors: (rootValue, args, { db }) => db.getAllAuthors(),
+      users: (rootValue, args, { db }) => db.getAllUsers()
+    },
+    Book: {
+      author: (book, args, { db }) => db.getAuthorById(book.authorId),
+      cover: book => ({
+        path: book.coverPath
+      })
+    },
+    Author: {
+      books: (author, args, { db }) => author.bookIds.map(db.getBookById),
+      photo: author => ({
+        path: author.photoPath
+      })
+    },
+    Avatar: {
+      image: avatar => ({
+        path: avatar.imagePath
+      })
+    },
+    Image: {
+      url: (image, args, { baseAssetsUrl }) => baseAssetsUrl + image.path
+    }
+  };
+  
+  module.exports = resolvers;
+  
