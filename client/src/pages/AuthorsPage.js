@@ -1,5 +1,6 @@
 import { gql, useQuery } from '@apollo/client'
 import React from 'react'
+import { Flex } from "@chakra-ui/react";
 
 import Author from '../components/Author'
 
@@ -32,7 +33,9 @@ export default function AuthorsPage() {
     return (
         <div>
             Authors:
-            {content}
+            <Flex wrap="wrap" justify="space-around">
+                {content}
+            </Flex>
         </div>
     )
 }
