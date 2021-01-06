@@ -36,9 +36,9 @@ export default function UsersPage() {
     return (
         <div>
             Authors:
-            <SimpleGrid columns="2">
+            <SimpleGrid columns={["1", "2", "4"]}>
                 {content}
             </SimpleGrid>
-        </div>
+        </div >
     )
 }

@@ -10,8 +10,8 @@ import { Routes, Route, Link as RouterLink } from 'react-router-dom'
 export default function App() {
     return (
         <>
-            <Flex direction="column" align="center" width="75%" mx="auto">
-                <Flex align="center" justify="space-between" w="100%">
+            <Flex direction="column" align="center" width={["95%", "60%"]} mx="auto">
+                <Flex direction={["column", "row", "column", "row", "column", "row"]} align="center" justify="space-between" w="100%">
                     <Link to='/' as={RouterLink}>
                         <Heading as='h1'>Personal Library</Heading>
                     </Link>
