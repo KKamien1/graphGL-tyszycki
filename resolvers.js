@@ -1,6 +1,29 @@
+const decodeBase64 = base64String => Buffer.from(base64String, 'base64').toString();
+const encodeBase64 = rawstring =>  Buffer.from(rawstring).toString('base64');
 
-const toDbId = externalId => Buffer.from(externalId, 'base64').toString();
-const toExternalId =  (dbId) => Buffer.from(dbId).toString('base64');
+const toExternalId =  (dbId, type) => encodeBase64(`${type}-${dbId}`);
+const toTypeAndDbId = externalId => decodeBase64(externalId).split('-',2);
+const toDbId = externalId => toTypeAndDbId(externalId)[1];
+
+const getAnythingByExternalId = (externalId, db) => {
+  const [type, dbId] = toTypeAndDbId(externalId); 
+
+  switch (type) {
+    case "Book":
+      return db.getBookById(dbId)
+      break;
+    case "Author":
+      return db.getAuthorById(dbId)
+      break;
+    case "User":
+      return db.getUserById(dbId)
+      break;
+  
+    default:
+      return null;
+      break;
+  }
+}
 
 const resolvers = {
   Query: {
@@ -9,17 +32,18 @@ const resolvers = {
     users: (rootValue, args, { db }) => db.getAllUsers(),
     book: (rootValue, { id }, { db }) => db.getBookById(toDbId(id)),
     user: (rootValue, { id }, { db }) => db.getUserById(toDbId(id)),
-    author: (rootValue, { id }, { db }) => db.getAuthorById(toDbId(id))
+    author: (rootValue, { id }, { db }) => db.getAuthorById(toDbId(id)),
+    anything: (rootValue, {id}, {db}) => getAnythingByExternalId(id,db)
   },
   Book: {
-    id: book => toExternalId(book.id),
+    id: book => toExternalId(book.id, 'Book'),
     author: (book, args, { db }) => db.getAuthorById(book.authorId),
     cover: book => ({
       path: book.coverPath
     })
   },
   Author: {
-    id: author => toExternalId(author.id),
+    id: author => toExternalId(author.id, 'Author'),
     books: (author, args, { db }) => author.bookIds.map(db.getBookById),
     photo: author => ({
       path: author.photoPath
@@ -34,8 +58,22 @@ const resolvers = {
     url: (image, args, { baseAssetsUrl }) => baseAssetsUrl + image.path
   },
   User: {
-    id: user => toExternalId(user.id),
+    id: user => toExternalId(user.id, 'User'),
     
+  },
+  Anything: {
+    __resolveType: (anything) => {
+      if(anything.title) {
+        return "Book";
+      }
+      if (anything.bio) {
+        return 'Author';
+      }
+      if (anything.info) {
+        return "User";
+      }
+      return null;
+    }
   }
 };
 
