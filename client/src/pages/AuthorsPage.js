@@ -1,41 +1,36 @@
-import { gql, useQuery } from '@apollo/client'
-import React from 'react'
-import { Flex } from "@chakra-ui/react";
+import React from "react";
+import { gql, useQuery } from "@apollo/client";
+import Author from "../components/Author";
+import { Flex, Box } from "@chakra-ui/react";
 
-import Author from '../components/Author'
-
-
-const ALL_AUTHORS_QUERY = gql`
-    query GetAllAuthors {
-        authors {
-            name
-            photo {
-                url
-            }
+const GET_AUTHORS_QUERY = gql`
+  query GetAuthors {
+    authors {
+      id
+      name
+      photo {
+        url
+      }
     }
-}`
+  }
+`;
 
-
-export default function AuthorsPage() {
-
-    const { loading, error, data } = useQuery(ALL_AUTHORS_QUERY)
-
+export default function UsersPage() {
+    const { loading, error, data } = useQuery(GET_AUTHORS_QUERY);
     if (loading) {
-        return (<p>Loading</p>)
+        return <p>Loading...</p>;
     }
     if (error) {
-        return (<p>Error: {error}</p>)
+        return <p>Could not load authors...</p>;
     }
-
     const { authors } = data;
-    const content = authors.map((author) => <Author author={author} />)
-
     return (
-        <div>
-            Authors:
+        <Box>
             <Flex wrap="wrap" justify="space-around">
-                {content}
+                {authors.map(author => (
+                    <Author author={author} />
+                ))}
             </Flex>
-        </div>
-    )
+        </Box>
+    );
 }
