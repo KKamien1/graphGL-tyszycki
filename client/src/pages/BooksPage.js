@@ -2,6 +2,7 @@ import React from "react";
 import { gql, useQuery } from "@apollo/client";
 import { Box } from "@chakra-ui/react";
 import Book from "../components/Book";
+import Link from "../components/Link";
 
 const GET_BOOKS_QUERY = gql`
   query GetBooks {
@@ -30,7 +31,9 @@ export default function BooksPage() {
     return (
         <Box w="100%">
             {books.map(book => (
-                <Book {...book} />
+                <Link key={book.id} to={`/books/${book.id}`}>
+                    <Book {...book} />
+                </Link>
             ))}
         </Box>
     );

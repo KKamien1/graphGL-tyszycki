@@ -46,10 +46,13 @@ export default function App() {
             </Flex>
             <Routes>
                 <Route path="/" element={<BooksPage />} />
+                <Route path="/books/:bookId" element={<BookDetailsPage />} />
 
                 <Route path="authors/" element={<AuthorsPage />} />
+                <Route path="authors/:authorId" element={<AuthorDetailsPage />} />
 
                 <Route path="users/" element={<UsersPage />} />
+                <Route path="users/:userId" element={<UserDetailsPage />} />
 
                 <Route path="admin/anything/:anyId" element={<AnythingDetailsPage />} />
                 <Route path="admin/everything" element={<EverythingPage />} />
