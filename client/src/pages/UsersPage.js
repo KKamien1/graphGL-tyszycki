@@ -1,6 +1,7 @@
 import React from "react";
 import { gql, useQuery } from "@apollo/client";
 import User from "../components/User";
+import Link from "../components/Link";
 import { SimpleGrid, Box } from "@chakra-ui/react";
 
 const ALL_USERS_QUERY = gql`
@@ -31,7 +32,7 @@ export default function UsersPage() {
         <Box w="100%">
             <SimpleGrid columns={[1, 2, 4]}>
                 {users.map(user => (
-                    <User user={user} />
+                    <Link key={user.id} to={`/users/${user.id}`}><User user={user} /></Link>
                 ))}
             </SimpleGrid>
         </Box>
