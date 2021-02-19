@@ -10,7 +10,7 @@ import App from "./App";
 const GRAPHQL_ENDPOINT = "https://examples.devmastery.pl/library-ids/graphql";
 
 const cache = new InMemoryCache({
-    addTypename: false,
+    addTypename: true,
     resultCaching: false
 });
 const client = new ApolloClient({

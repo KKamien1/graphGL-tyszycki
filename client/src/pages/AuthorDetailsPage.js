@@ -3,24 +3,16 @@ import { gql, useQuery } from "@apollo/client";
 import { Box } from "@chakra-ui/react";
 import AuthorDetails from '../components/AuthorDetails'
 import { useParams } from "react-router";
+import { AUTHOR_DETAILS_FIELDS_FRAGMENT } from '../components/AuthorDetails';
 
 const GET_AUTHOR_QUERY = gql`
-query GetAuthor($authorId: ID!) {
-  author(id: $authorId) {
-    id
-    name
-    bio
-    photo {
-      url
-    }
-    books {
-        title
-        cover {
-            url
+    query GetAuthor($authorId: ID!) {
+        author(id: $authorId) {
+            __typename
+            ...authorDetailsFields
         }
     }
-  }
-}
+    ${AUTHOR_DETAILS_FIELDS_FRAGMENT}
 `;
 
 

@@ -1,22 +1,21 @@
 import React from "react";
 import { gql, useQuery } from "@apollo/client";
 import { Box } from "@chakra-ui/react";
-import Book from "../components/Book";
+import Book, {BOOK_FIELDS_FRAGMENT} from "../components/Book";
 import Link from "../components/Link";
+
+
+
 
 const GET_BOOKS_QUERY = gql`
   query GetBooks {
     books {
-      id
-      title
-      cover {
-        url
-      }
-      author {
-        name
-      }
+      __typename
+      ...bookFields
     }
   }
+  ${BOOK_FIELDS_FRAGMENT}
+
 `;
 
 export default function BooksPage() {
