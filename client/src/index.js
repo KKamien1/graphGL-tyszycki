@@ -11,7 +11,10 @@ const GRAPHQL_ENDPOINT = "https://examples.devmastery.pl/library-ids/graphql";
 
 const cache = new InMemoryCache({
     addTypename: true,
-    resultCaching: false
+    resultCaching: false,
+    possibleTypes: {
+        Anything: ["Book", "Author", "User"]
+    }
 });
 const client = new ApolloClient({
     uri: GRAPHQL_ENDPOINT,
