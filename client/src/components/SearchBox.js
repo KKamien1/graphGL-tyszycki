@@ -1,6 +1,15 @@
 import React, { useState } from "react";
+import { useParams } from 'react-router';
+import {useNavigate} from 'react-router-dom'
 import { Input, FormLabel, IconButton, Stack } from "@chakra-ui/react";
 import { SearchIcon, EditIcon, CloseIcon, DeleteIcon} from '@chakra-ui/icons'
+
+export const useSearchQuery = (baseSearchPath) => {
+    const navigate = useNavigate();
+    const {searchQuery = ''} = useParams();
+    const handleSearchQueryChange = (newsearchQuery) => navigate(`${baseSearchPath}${encodeURIComponent(newsearchQuery)}`);
+    return [searchQuery, handleSearchQueryChange];
+}
 
 export default function SearchBox({ searchQuery, onSearchQueryChange }) {
   const [searchQueryDraft, setSearchQueryDraft] = useState(searchQuery);

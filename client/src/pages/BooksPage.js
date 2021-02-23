@@ -3,12 +3,7 @@ import { gql, useQuery } from "@apollo/client";
 import { Box } from "@chakra-ui/react";
 import Book, {BOOK_FIELDS_FRAGMENT} from "../components/Book";
 import Link from "../components/Link";
-import { useParams } from 'react-router';
-import {useNavigate} from 'react-router-dom'
-import SearchBox from '../components/SearchBox';
-
-
-
+import SearchBox, {useSearchQuery} from '../components/SearchBox';
 
 const GET_BOOKS_QUERY = gql`
   query GetBooks($searchQuery: String! ) {
@@ -21,8 +16,8 @@ const GET_BOOKS_QUERY = gql`
 `;
 
 export default function BooksPage() {
-    const navigate = useNavigate();
-    const {searchQuery = ''} = useParams();
+    const [searchQuery, handleSearchQueryChange] = useSearchQuery(`/books/search/`);
+
     const { loading, error, data } = useQuery(GET_BOOKS_QUERY, {variables: { 
         searchQuery
     }});
@@ -35,11 +30,10 @@ export default function BooksPage() {
     const { books } = data;
     const hasBooks = books.length > 0;
 
-    const onSearchQueryChange = (newsearchQuery) => navigate(`/books/search/${encodeURIComponent(newsearchQuery)}`);
 
     return (
         <Box w="100%">
-            <SearchBox searchQuery={searchQuery} onSearchQueryChange={onSearchQueryChange}/>
+            <SearchBox searchQuery={searchQuery} onSearchQueryChange={handleSearchQueryChange}/>
             {hasBooks ? 
             (books.map(book => (
                 <Link key={book.id} to={`/books/${book.id}`}>
