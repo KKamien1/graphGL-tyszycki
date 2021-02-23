@@ -1,5 +1,39 @@
 import React from "react";
+import {gql} from '@apollo/client'
 import { Stack, Image, Heading, Box } from "@chakra-ui/react";
+
+export const normalizeAnything = anything => ({
+    ...anything.nested, 
+    ...anything
+})
+
+export const NORMALIZED_ANYTHING_FIELDS_FRAGMENT = gql`
+    fragment narmalizedAnythingFields on Anything {
+        ... on Author {
+            name
+            info: bio
+            img: photo {
+                url
+            }
+        }
+        ... on User {
+            name
+            info
+            nested: avatar {
+                img: image {
+                    url
+                }
+            }
+        }
+        ... on Book {
+            name: title
+            info: description
+            img: cover {
+                url
+            }
+        }
+    }
+`
 
 const COLORS_BY_TYPENAME = {
     Book: "red.200",
