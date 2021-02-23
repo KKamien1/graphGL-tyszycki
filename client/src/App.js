@@ -47,6 +47,8 @@ export default function App() {
             <Routes>
                 <Route path="/" element={<BooksPage />} />
                 <Route path="/books/:bookId" element={<BookDetailsPage />} />
+                <Route path="/books/search/:searchQuery" element={<BooksPage />} />
+                <Route path="/books/search" element={<BooksPage />} />
 
                 <Route path="authors/" element={<AuthorsPage />} />
                 <Route path="authors/:authorId" element={<AuthorDetailsPage />} />

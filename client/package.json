@@ -6,6 +6,7 @@
   "main": "src/index.js",
   "dependencies": {
     "@apollo/client": "3.0.0-beta.34",
+    "@chakra-ui/icons": "^1.0.5",
     "@chakra-ui/react": "^1.1.2",
     "@emotion/react": "^11.1.4",
     "@emotion/styled": "^11.0.0",
