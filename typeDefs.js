@@ -11,9 +11,10 @@ const typeDefs = gql`
     user(id: ID!): User
     author(id: ID!): Author
     anything(id: ID!): Anything
+    everything: [Anything!]!
   }
 
-  union Anything = Author | Book | User
+  union Anything = Author | Book | User | BookCopy
 
   type Author {
     id: ID!
@@ -28,6 +29,7 @@ const typeDefs = gql`
     cover: Image!
     description: String!
     author: Author!
+    copies: [BookCopy!]!
   }
   type User {
     id: ID!
@@ -35,6 +37,8 @@ const typeDefs = gql`
     email: String!
     info: String!
     avatar: Avatar!
+    ownedBookCopies: [BookCopy!]!
+    borrowedBookCopies: [BookCopy!]!
   }
   type Image {
     url: String!
@@ -42,6 +46,12 @@ const typeDefs = gql`
   type Avatar {
     image: Image!
     color: String!
+  }
+  type BookCopy {
+    id: ID!
+    book: Book!
+    owner: User!
+    borrower: User
   }
 `;
 
