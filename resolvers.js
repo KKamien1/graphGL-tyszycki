@@ -1,3 +1,5 @@
+const rootValue = require('./rootValue');
+
 const decodeBase64 = base64String => Buffer.from(base64String, 'base64').toString();
 const encodeBase64 = rawstring => Buffer.from(rawstring).toString('base64');
 
@@ -43,6 +45,12 @@ const resolvers = {
       ...db.getAllUsers(),
       ...db.getAllBooks()
     ]
+  },
+  Mutation: {
+    borrowBookCopy: (rootValue, {id}, {db, currentUserDbId}) => {
+      db.borrowBookCopy(toDbId(id),currentUserDbId);
+      return db.getBookCopyById(toDbId(id));
+    }
   },
   Book: {
     id: book => toExternalId(book.id, 'Book'),

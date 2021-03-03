@@ -378,6 +378,18 @@ const getBookCopiesBorrowedByUser = userId =>
   getAllBookCopies().filter(bookCopy => bookCopy.borrowerId === userId);
 
 
+const borrowBookCopy = (bookCopyId, borrowedId) => {
+  const index = toIndex(bookCopyId);
+  if(index < 0 || index >= data.bookCopies.length) {
+    throw new Error('Cannot borrow the book copy.')
+  }
+  const bookCopy = data.bookCopies[index];
+  if(!!bookCopy.borrowerId) {
+    throw new Error("Cannot borrow the copy. It is already borrowed");
+  }
+  bookCopy.borrowerId = borrowedId;
+}
+
 const db = {
   getAllBooks,
   getAllAuthors,
@@ -389,6 +401,7 @@ const db = {
   getUserById,
   getBookCopyById,
   getBookCopiesOwnedByUser,
-  getBookCopiesBorrowedByUser
+  getBookCopiesBorrowedByUser,
+  borrowBookCopy
 };
 module.exports = db;
