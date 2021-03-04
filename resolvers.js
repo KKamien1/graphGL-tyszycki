@@ -1,3 +1,4 @@
+const { getResourceByIdAndType } = require('./db');
 const rootValue = require('./rootValue');
 
 const decodeBase64 = base64String => Buffer.from(base64String, 'base64').toString();
@@ -30,6 +31,12 @@ const getAnythingByExternalId = (externalId, db) => {
   }
 }
 
+const getResourceByExternalId = (externalId, db) => {
+  const [type, dbId] = toTypeAndDbId(externalId);
+  return db.getResourceByIdAndType(dbId, type);
+}
+
+const id = resource => toExternalId(resource.id, resource.resourceType);
 const resolvers = {
   Query: {
     books: (rootValue, { searchQuery }, { search, db }) => search.findBooks(searchQuery), // db.getAllBooks(),
@@ -38,8 +45,15 @@ const resolvers = {
     book: (rootValue, { id }, { db }) => db.getBookById(toDbId(id)),
     user: (rootValue, { id }, { db }) => db.getUserById(toDbId(id)),
     author: (rootValue, { id }, { db }) => db.getAuthorById(toDbId(id)),
-    anything: (rootValue, { id }, { db }) => getAnythingByExternalId(id, db),
+    anything: (rootValue, { id }, { db }) => getResourceByExternalId(id, db),
+    resource: (rootValue, { id }, { db }) => getResourceByExternalId(id, db),
     everything: (rootValue, { id }, { db }) => [
+      ...db.getAllBookCopies(),
+      ...db.getAllAuthors(),
+      ...db.getAllUsers(),
+      ...db.getAllBooks()
+    ],
+    resources: (rootValue, { id }, { db }) => [
       ...db.getAllBookCopies(),
       ...db.getAllAuthors(),
       ...db.getAllUsers(),
@@ -57,7 +71,7 @@ const resolvers = {
     }
   },
   Book: {
-    id: book => toExternalId(book.id, 'Book'),
+    id,
     author: (book, args, { db }) => db.getAuthorById(book.authorId),
     copies: (book, args, { db }) => db.getBookCopiesByBookId(book.id),
     cover: book => ({
@@ -65,7 +79,7 @@ const resolvers = {
     })
   },
   BookCopy: {
-    id: bookCopy => toExternalId(bookCopy.id, "BookCopy"),
+    id,
     owner: (bookCopy, args, { db }) => db.getUserById(bookCopy.ownerId),
     book: (bookCopy, args, { db }) => db.getBookById(bookCopy.bookId),
     borrower: (bookCopy, args, { db }) =>
@@ -73,7 +87,7 @@ const resolvers = {
 
   },
   Author: {
-    id: author => toExternalId(author.id, 'Author'),
+    id,
     books: (author, args, { db }) => author.bookIds.map(db.getBookById),
     photo: author => ({
       path: author.photoPath
@@ -88,7 +102,7 @@ const resolvers = {
     url: (image, args, { baseAssetsUrl }) => baseAssetsUrl + image.path
   },
   User: {
-    id: user => toExternalId(user.id, 'User'),
+    id,
     ownedBookCopies: (user, args, { db }) => db.getBookCopiesOwnedByUser(user.id),
     borrowedBookCopies: (user, args, { db }) => db.getBookCopiesOwnedByUser(user.id),
 
@@ -109,6 +123,9 @@ const resolvers = {
       }
       return null;
     }
+  },
+  Resource: {
+    __resolveType: (resource) => resource.resourceType,
   }
 };
 

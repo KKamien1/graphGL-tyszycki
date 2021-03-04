@@ -324,6 +324,7 @@ const getBookById = id => {
   return {
     ...data.books[toIndex(id)],
     id,
+    resourceType:'Book',
     authorId: getAuthorIdByBookId(id)
   }
 };
@@ -339,6 +340,7 @@ const getAuthorById = id => {
   return {
     ...data.authors[toIndex(id)],
     id,
+    resourceType:'Author',
     bookIds: data.bookIdsByAuthorId[id]
   };
 }
@@ -353,7 +355,8 @@ const getUserById = id => {
   }
   return {
     ...data.users[toIndex(id)],
-    id
+    id,
+    resourceType:'User'
   };
 }
 
@@ -362,7 +365,8 @@ const getAllUsers = () =>
 
 const getBookCopyById = id => ({
   ...data.bookCopies[toIndex(id)],
-  id
+  id,
+  resourceType:'BookCopy'
 });
 
 const getAllBookCopies = () =>
@@ -405,6 +409,26 @@ const returnBookCopy = (bookCopyId, borrowedId) => {
   bookCopy.borrowerId = null;
 }
 
+const getResourceByIdAndType = (id, type) => {
+  switch (type) {
+    case "Book":
+      return getBookById(id)
+      break;
+    case "Author":
+      return getAuthorById(id)
+      break;
+    case "User":
+      return getUserById(id)
+      break;
+    case "BookCopy":
+      return getBookCopyById(id)
+      break;
+
+    default:
+      return null;
+      break;
+  }
+}
 
 
 const db = {
@@ -420,6 +444,7 @@ const db = {
   getBookCopiesOwnedByUser,
   getBookCopiesBorrowedByUser,
   borrowBookCopy,
-  returnBookCopy
+  returnBookCopy,
+  getResourceByIdAndType
 };
 module.exports = db;
