@@ -16,7 +16,8 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    borrowBookCopy(id:ID!): BookCopy!  
+    borrowBookCopy(id:ID!): BookCopy!
+    returnBookCopy(id:ID!): BookCopy!
   }
 
   union Anything = Author | Book | User | BookCopy

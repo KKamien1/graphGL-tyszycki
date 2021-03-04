@@ -390,6 +390,23 @@ const borrowBookCopy = (bookCopyId, borrowedId) => {
   bookCopy.borrowerId = borrowedId;
 }
 
+const returnBookCopy = (bookCopyId, borrowedId) => {
+  const index = toIndex(bookCopyId);
+  if(index < 0 || index >= data.bookCopies.length) {
+    throw new Error('Cannot find the book copy.')
+  }
+  const bookCopy = data.bookCopies[index];
+  if(!bookCopy.borrowerId) {
+    throw new Error("Cannot return the copy. It's hasn's been borrowed");
+  }
+  if (bookCopy.borrowerId !== borrowedId) {
+    throw Error('You did not borrow this book!');
+  }
+  bookCopy.borrowerId = null;
+}
+
+
+
 const db = {
   getAllBooks,
   getAllAuthors,
@@ -402,6 +419,7 @@ const db = {
   getBookCopyById,
   getBookCopiesOwnedByUser,
   getBookCopiesBorrowedByUser,
-  borrowBookCopy
+  borrowBookCopy,
+  returnBookCopy
 };
 module.exports = db;
