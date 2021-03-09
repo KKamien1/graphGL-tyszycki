@@ -10,7 +10,7 @@ const toDbId = externalId => toTypeAndDbId(externalId)[1];
 
 const getAnythingByExternalId = (externalId, db) => {
   const [type, dbId] = toTypeAndDbId(externalId);
-
+  console.log(type, dbId)
   switch (type) {
     case "Book":
       return db.getBookById(dbId)
@@ -45,7 +45,7 @@ const resolvers = {
     book: (rootValue, { id }, { db }) => db.getBookById(toDbId(id)),
     user: (rootValue, { id }, { db }) => db.getUserById(toDbId(id)),
     author: (rootValue, { id }, { db }) => db.getAuthorById(toDbId(id)),
-    anything: (rootValue, { id }, { db }) => getResourceByExternalId(id, db),
+    anything: (rootValue, { id }, { db }) => getAnythingByExternalId(id, db),
     resource: (rootValue, { id }, { db }) => getResourceByExternalId(id, db),
     everything: (rootValue, { id }, { db }) => [
       ...db.getAllBookCopies(),
@@ -84,7 +84,6 @@ const resolvers = {
     book: (bookCopy, args, { db }) => db.getBookById(bookCopy.bookId),
     borrower: (bookCopy, args, { db }) =>
       bookCopy.borrowerId && db.getUserById(bookCopy.borrowerId)
-
   },
   Author: {
     id,

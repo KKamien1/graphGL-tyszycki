@@ -3,6 +3,7 @@ import {gql} from '@apollo/client'
 import BookDetails from './BookDetails';
 import AuthorDetails from './AuthorDetails';
 import UserDetails from './UserDetails';
+import BookCopy, {BOOK_COPY_FIELDS_FRAGMENT} from './BookCopy';
 
 import { BOOK_DETAILS_FIELDS_FRAGMENT } from './BookDetails';
 import { AUTHOR_DETAILS_FIELDS_FRAGMENT } from './AuthorDetails';
@@ -13,14 +14,19 @@ export const ANYTHING_DETAILS_FIELDS_FRAGMENT = gql`
         ...bookDetailsFields
         ...authorDetailsFields
         ...userDetailsFields
+        ...bookCopyFields
     }
 ${BOOK_DETAILS_FIELDS_FRAGMENT}
 ${AUTHOR_DETAILS_FIELDS_FRAGMENT}
 ${USER_DETAILS_FIELDS_FRAGMENT}
+${BOOK_COPY_FIELDS_FRAGMENT}
 `
 
 export default function AnythingDetails({ anything }) {
     switch (anything.__typename) {
+        case "BookCopy": {
+            return <BookCopy bookCopy={anything} showOwner showBorrower showActions/>
+        }
         case "Book": {
             return <BookDetails book={anything} />
         }

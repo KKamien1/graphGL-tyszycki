@@ -22,7 +22,7 @@ const typeDefs = gql`
     returnBookCopy(id:ID!): BookCopy!
   }
 
-  union Anything = Author | Book | User | BookCopy
+  union Anything = Author | Book | BookCopy | User 
   interface Resource {
     id: ID!
   }
