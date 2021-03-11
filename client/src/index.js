@@ -7,7 +7,7 @@ import { CSSReset, ThemeProvider, theme } from "@chakra-ui/react";
 
 import App from "./App";
 
-const GRAPHQL_ENDPOINT = "https://examples.devmastery.pl/library-ids/graphql";
+const GRAPHQL_ENDPOINT = "http://localhost:4000";
 
 const cache = new InMemoryCache({
     addTypename: true,
