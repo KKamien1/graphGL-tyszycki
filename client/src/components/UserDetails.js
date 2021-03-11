@@ -14,7 +14,6 @@ export const USER_DETAILS_FIELDS_FRAGMENT = gql`
       color
     }
   }
-
 `;
 
 export default function User({ user }) {

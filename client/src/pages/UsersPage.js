@@ -3,22 +3,18 @@ import { gql, useQuery } from "@apollo/client";
 import User from "../components/User";
 import Link from "../components/Link";
 import SearchBox, {useSearchQuery} from '../components/SearchBox';
+import {USER_DETAILS_FIELDS_FRAGMENT} from '../components/UserDetails'
+
 
 import { SimpleGrid, Box } from "@chakra-ui/react";
 
 const ALL_USERS_QUERY = gql`
   query AllUsers($searchQuery: String) {
     users(searchQuery: $searchQuery) {
-      id
-      name
-      avatar {
-        image {
-          url
-        }
-        color
-      }
+      ...userDetailsFields
     }
   }
+  ${USER_DETAILS_FIELDS_FRAGMENT}
 `;
 
 export default function UsersPage() {

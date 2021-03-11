@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, Box, AspectRatioBox } from "@chakra-ui/react";
+import { Image, Box, AspectRatio  } from "@chakra-ui/react";
 import Avatar, { AVATAR_FIELDS_FRAGMENT } from "./Avatar";
 import Link from "./Link";
 import BookCopyActions from "./BookCopy/BookCopyActions";
@@ -41,9 +41,9 @@ export default function BookCopy({
   return (
     <Box p={2}>
       <Box position="relative" p={2}>
-        <AspectRatioBox minW="120px" maxW="300px" ratio={317 / 475}>
+        <AspectRatio  minW="120px" maxW="300px" ratio={317 / 475}>
           <Image src={book.cover.url} objectFit="cover" mr="3" />
-        </AspectRatioBox>
+        </AspectRatio >
         {showOwner && (
           <Link to={`/users/${owner.id}`}>
             <Avatar
