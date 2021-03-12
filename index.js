@@ -15,7 +15,7 @@ const server = new ApolloServer({
   context: {
     search: new Search(db),
     db,
-    currentUserDbId: "3",
+    currentUserDbId: "2",
     baseAssetsUrl: BASE_ASSETS_URL
   },
   introspection: true,

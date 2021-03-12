@@ -2,7 +2,8 @@ import React from "react";
 import { gql, useQuery } from "@apollo/client";
 import { Box, Flex, Heading } from "@chakra-ui/react";
 import { useParams } from "react-router";
-import BookCopy, {BOOK_COPY_FIELDS_FRAGMENT} from '../components/BookCopy'
+import BookCopy from '../components/BookCopy'
+import {BOOK_COPY_FIELDS_FRAGMENT} from '../components/BookCopy/fragment'
 import UserDetails, {USER_DETAILS_FIELDS_FRAGMENT} from '../components/UserDetails'
 
 const GET_USER_QUERY = gql`

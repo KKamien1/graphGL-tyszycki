@@ -4,32 +4,9 @@ import Avatar, { AVATAR_FIELDS_FRAGMENT } from "./Avatar";
 import Link from "./Link";
 import BookCopyActions from "./BookCopy/BookCopyActions";
 import { gql } from "@apollo/client";
+import {BOOK_COPY_FIELDS_FRAGMENT} from './BookCopy/fragment'
 
-export const BOOK_COPY_FIELDS_FRAGMENT = gql`
-  fragment bookCopyFields on BookCopy {
-    id
-    book {
-      cover {
-        url
-      }
-    }
-    owner {
-      id
-      name
-      avatar {
-        ...avatarFields
-      }
-    }
-    borrower {
-      id
-      name
-      avatar {
-        ...avatarFields
-      }
-    }
-  }
-  ${AVATAR_FIELDS_FRAGMENT}
-`;
+
 
 export default function BookCopy({
   bookCopy,
