@@ -5,7 +5,7 @@ const typeDefs = gql`
     mutation: Mutation
   }
   type Query {
-    authors: [Author!]!
+    authors(searchQuery: String! = "") : [Author!]!
     books(searchQuery: String! = "") : [Book!]!
     users(searchQuery: String! = ""): [User!]!
     book(id: ID!): Book

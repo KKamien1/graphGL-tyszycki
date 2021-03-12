@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "@chakra-ui/react";
+import { Button, useToast } from "@chakra-ui/react";
 import {gql, useMutation} from '@apollo/client'
 import {BOOK_COPY_FIELDS_FRAGMENT} from './fragment'
 
@@ -16,10 +16,31 @@ export const BORROW_BOOK_COPY_MUTATION = gql`
 
 
 export default function BorrowButton({ availableBookCopy }) {
+  const toast = useToast();
 
-  const [borrowBookCopy, {loading, data} ] = useMutation(BORROW_BOOK_COPY_MUTATION, {
+  const [borrowBookCopy, {loading} ] = useMutation(BORROW_BOOK_COPY_MUTATION, {
     variables: {
-      bookCopyId: availableBookCopy.id
+      bookCopyId: availableBookCopy.id,
+    },
+    onError: (error) => {
+      toast({
+        title: "Could not borrow the book",
+        description: error.message,
+        status: 'error',
+        duration: 1000,
+        position: "top",
+        isClosable: true
+      })
+    },
+    onCompleted: () => {
+      toast({
+        title: "Success!",
+        description: 'You`ve borrowed the book',
+        status: 'success',
+        duration: 1000,
+        position: "top",
+        isClosable: true
+      })
     }
   })
   // console.log(data)

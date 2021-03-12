@@ -61,11 +61,11 @@ const resolvers = {
     ]
   },
   Mutation: {
-    borrowBookCopy: (rootValue, {id}, {db, currentUserDbId}) => {
-      db.borrowBookCopy(toDbId(id),currentUserDbId);
+    borrowBookCopy: (rootValue, { id }, { db, currentUserDbId }) => {
+      db.borrowBookCopy(toDbId(id), currentUserDbId);
       return db.getBookCopyById(toDbId(id));
     },
-    returnBookCopy: (rootValue, {id}, {db, currentUserDbId}) => {
+    returnBookCopy: (rootValue, { id }, { db, currentUserDbId }) => {
       db.returnBookCopy(toDbId(id), currentUserDbId);
       return db.getBookCopyById(toDbId(id))
     }
@@ -103,7 +103,7 @@ const resolvers = {
   User: {
     id,
     ownedBookCopies: (user, args, { db }) => db.getBookCopiesOwnedByUser(user.id),
-    borrowedBookCopies: (user, args, { db }) => db.getBookCopiesOwnedByUser(user.id),
+    borrowedBookCopies: (user, args, { db }) => db.getBookCopiesBorrowedByUser(user.id),
 
   },
   Anything: {
