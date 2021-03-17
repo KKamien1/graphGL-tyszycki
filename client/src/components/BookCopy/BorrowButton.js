@@ -43,12 +43,28 @@ export default function BorrowButton({ availableBookCopy }) {
         isClosable: true
       })
     },
-    refetchQueries: ({ data }) => [
-      {
+    // refetchQueries: ({ data }) => [
+    //   {
+    //     query: GET_USER_QUERY,
+    //     variables: { userId: data.borrowBookCopy.borrower.id }
+    //   }
+    // ],
+    update: (cache, {data: {borrowBookCopy}}) => {
+      const cachedData = cache.readQuery(
+        {
+          query: GET_USER_QUERY,
+          variables: { userId: borrowBookCopy.borrower.id }
+        }
+      )
+      console.log(cachedData);
+      const data = JSON.parse(JSON.stringify(cachedData));
+      data.user.borrowedBookCopies.push(borrowBookCopy);
+      cache.writeQuery({
         query: GET_USER_QUERY,
-        variables: { userId: data.borrowBookCopy.borrower.id }
-      }
-    ]
+        variables: {userId: borrowBookCopy.borrower.id},
+        data
+      })
+    }
   })
   return (
     <Button onClick={borrowBookCopy} disabled={loading}>

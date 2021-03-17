@@ -40,12 +40,28 @@ export default function ReturnButton({ borrowedBookCopy }) {
         isClosable: true
       })
     },
-    refetchQueries: [
-      {
+    // refetchQueries: [
+    //   {
+    //     query: GET_USER_QUERY,
+    //     variables: { userId: borrowedBookCopy.borrower.id }
+    //   }
+    // ],
+    update: (cache, {data: {returnBookCopy}}) => {
+      const cachedData = cache.readQuery(
+        {
+          query: GET_USER_QUERY,
+          variables: { userId: borrowedBookCopy.borrower.id}
+        }
+      )
+      console.log(cachedData);
+      const data = JSON.parse(JSON.stringify(cachedData));
+      data.user.borrowedBookCopies = [...data.user.borrowedBookCopies].filter(bookCopy => bookCopy.id !== borrowedBookCopy.id)
+      cache.writeQuery({
         query: GET_USER_QUERY,
-        variables: { userId: borrowedBookCopy.borrower.id }
-      }
-    ]
+        variables: {userId: borrowedBookCopy.borrower.id},
+        data
+      })
+    }
   })
 
   return (
