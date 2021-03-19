@@ -87,7 +87,7 @@ const resolvers = {
   },
   Author: {
     id,
-    books: (author, args, { db }) => author.bookIds.map(db.getBookById),
+    books: (author, args, { db }) => db.getBooksByAuthorId(author.id),
     photo: author => ({
       path: author.photoPath
     })
@@ -102,9 +102,9 @@ const resolvers = {
   },
   User: {
     id,
-    ownedBookCopies: (user, args, { db }) => db.getBookCopiesOwnedByUser(user.id),
-    borrowedBookCopies: (user, args, { db }) => db.getBookCopiesBorrowedByUser(user.id),
-
+    ownedBookCopies: (user, args, { db }) => db.getBookCopiesByOwnerId(user.id),
+    borrowedBookCopies: (user, args, { db }) =>
+      db.getBookCopiesByBorrowerId(user.id)
   },
   Anything: {
     __resolveType: (anything) => {
